@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Trabalho_PWEB.Models;
 
 namespace Trabalho_PWEB.Data
 {
@@ -9,5 +10,6 @@ namespace Trabalho_PWEB.Data
             : base(options)
         {
         }
+        public DbSet<Trabalho_PWEB.Models.Categoria> Categoria { get; set; }
     }
 }

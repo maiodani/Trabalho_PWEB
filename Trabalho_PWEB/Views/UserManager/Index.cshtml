@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Trabalho_PWEB.Models.UserRolesViewModel>
+@{
+ ViewData["Title"] = "Role Manager";
+}
+<h1>Gestão de Users</h1>
+    <table class="table table-striped table-hover table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nome</th>
+                <th>Roles</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td class="col-md-3">
+                    @Html.DisplayFor(modelItem => item.PrimeiroNome) @Html.DisplayFor(modelItem => item.UltimoNome)
+                </td>
+                <td class="col-md-4">
+                   @{
+                       foreach (var aux in item.Roles){
+                            @aux;
+                       }
+                    }
+                </td>
+                <td class="col-md-2">
+                   <a asp-action="Edit" asp-route-userId="@item.UserId">Editar</a> |
+                    <a asp-action="Details" asp-route-userId="@item.UserId">Detalhes</a> |
+                    <a asp-action="Delete" asp-route-userId="@item.UserId">Apagar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -11,5 +11,6 @@ namespace Trabalho_PWEB.Data
         {
         }
         public DbSet<Trabalho_PWEB.Models.Categoria> Categoria { get; set; }
+        public DbSet<Trabalho_PWEB.Models.Empresa> Empresa { get; set; }
     }
 }

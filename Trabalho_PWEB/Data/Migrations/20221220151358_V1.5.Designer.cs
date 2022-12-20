@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trabalho_PWEB.Data;
 
@@ -11,9 +12,10 @@ using Trabalho_PWEB.Data;
 namespace Trabalho_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221220151358_V1.5")]
+    partial class V15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,7 +265,7 @@ namespace Trabalho_PWEB.Data.Migrations
                     b.Property<int>("Avaliação")
                         .HasColumnType("int");
 
-                    b.Property<bool>("EstadoSubscricao")
+                    b.Property<bool>("EstadoSubcricao")
                         .HasColumnType("bit");
 
                     b.Property<string>("Nome")
@@ -380,7 +382,7 @@ namespace Trabalho_PWEB.Data.Migrations
             modelBuilder.Entity("Trabalho_PWEB.Models.Veiculo", b =>
                 {
                     b.HasOne("Trabalho_PWEB.Models.Empresa", null)
-                        .WithMany("Veiculos")
+                        .WithMany("Veiculo")
                         .HasForeignKey("EmpresaId");
 
                     b.HasOne("Trabalho_PWEB.Models.Categoria", "categoria")
@@ -396,7 +398,7 @@ namespace Trabalho_PWEB.Data.Migrations
                 {
                     b.Navigation("ListaFuncionarios");
 
-                    b.Navigation("Veiculos");
+                    b.Navigation("Veiculo");
                 });
 #pragma warning restore 612, 618
         }

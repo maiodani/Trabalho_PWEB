@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trabalho_PWEB.Data;
 
@@ -11,9 +12,10 @@ using Trabalho_PWEB.Data;
 namespace Trabalho_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221220150056_V1.3")]
+    partial class V13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,9 +180,6 @@ namespace Trabalho_PWEB.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EmpresaId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -222,8 +221,6 @@ namespace Trabalho_PWEB.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmpresaId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -250,73 +247,6 @@ namespace Trabalho_PWEB.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categoria");
-                });
-
-            modelBuilder.Entity("Trabalho_PWEB.Models.Empresa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Avaliação")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("EstadoSubscricao")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Empresa");
-                });
-
-            modelBuilder.Entity("Trabalho_PWEB.Models.Veiculo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DataEntrega")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("EmpresaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Localização")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Matricula")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Preco")
-                        .HasColumnType("real");
-
-                    b.Property<int>("categoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Ócupado")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmpresaId");
-
-                    b.HasIndex("categoriaId");
-
-                    b.ToTable("Veiculo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -368,35 +298,6 @@ namespace Trabalho_PWEB.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Trabalho_PWEB.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Trabalho_PWEB.Models.Empresa", null)
-                        .WithMany("ListaFuncionarios")
-                        .HasForeignKey("EmpresaId");
-                });
-
-            modelBuilder.Entity("Trabalho_PWEB.Models.Veiculo", b =>
-                {
-                    b.HasOne("Trabalho_PWEB.Models.Empresa", null)
-                        .WithMany("Veiculos")
-                        .HasForeignKey("EmpresaId");
-
-                    b.HasOne("Trabalho_PWEB.Models.Categoria", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("categoria");
-                });
-
-            modelBuilder.Entity("Trabalho_PWEB.Models.Empresa", b =>
-                {
-                    b.Navigation("ListaFuncionarios");
-
-                    b.Navigation("Veiculos");
                 });
 #pragma warning restore 612, 618
         }

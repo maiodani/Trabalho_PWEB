@@ -12,8 +12,7 @@ namespace Trabalho_PWEB.Data
     }
     public static class Inicializacao
     {
-        public static async Task CriaDadosIniciais(UserManager<ApplicationUser>
-userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task CriaDadosIniciais(UserManager<ApplicationUser>userManager, RoleManager<IdentityRole> roleManager)
         {
             //Adicionar default Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));

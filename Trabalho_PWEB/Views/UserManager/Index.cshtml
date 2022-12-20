@@ -23,16 +23,11 @@
                     @Html.DisplayFor(modelItem => item.PrimeiroNome) @Html.DisplayFor(modelItem => item.UltimoNome)
                 </td>
                 <td class="col-md-4">
-                   @{
-                       foreach (var aux in item.Roles){
-                            @aux;
-                       }
-                    }
+                    @string.Join(", ", item.Roles)
                 </td>
                 <td class="col-md-2">
-                   <a asp-action="Edit" asp-route-userId="@item.UserId">Editar</a> |
-                    <a asp-action="Details" asp-route-userId="@item.UserId">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-userId="@item.UserId">Apagar</a>
+                   <a asp-action="Edit" asp-route-userId="@item.UserId">Editar</a>
+                   <a asp-action="Details" asp-route-userId="@item.UserId">Detalhes</a>
                 </td>
             </tr>
         }

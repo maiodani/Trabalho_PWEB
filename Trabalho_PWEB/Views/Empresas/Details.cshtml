@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Details";
+    var funcionarios = new List<ApplicationUser>();
+    funcionarios = Model.ListaFuncionarios.ToList();
+    List<string> rolesUsers = ViewBag.rolesUsers;
+    List<Veiculo> veiculos = ViewBag.v;
+    if (veiculos == null) veiculos = new List<Veiculo>();
+    if (rolesUsers == null) rolesUsers = new List<string>();
 }
 
 <h1>Details</h1>
@@ -29,6 +35,62 @@
             @Html.DisplayFor(model => model.Avaliação)
         </dd>
     </dl>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Roles
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(int i =0;i<funcionarios.Count;i++){
+                <tr>
+                    <td>
+                        @funcionarios[i].Email
+                    </td>
+                    
+                    <td>
+                        @rolesUsers[i]
+                    </td>
+                </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Matricula
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(int i =0;i<veiculos.Count;i++){
+                <tr>
+                    <td>
+                        @veiculos[i].Matricula
+                    </td>
+                    
+                    <td>
+                        @veiculos[i].categoria
+                    </td>
+                </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

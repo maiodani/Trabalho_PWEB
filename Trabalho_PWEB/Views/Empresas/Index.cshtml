@@ -4,15 +4,30 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Index Empresas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar Nova Empresa</a>
 </p>
-<a asp-action="Index">Todos</a>
-<a asp-action="Index" asp-route-opcao="1">Subcrição Inativa</a>
-<a asp-action="Index" asp-route-opcao="2">Subcrição Ativa</a>
-<a asp-action="Index" asp-route-opcao="3">POR NOME (FAZER)</a>
+<div class="row">
+    <h2>Pesquisas</h2>    
+</div>
+<div class="row border  border-dark rounded">
+    <a asp-action="Index">Todos</a>
+    <a asp-action="Index" asp-route-opcao="1">Subcrição Inativa</a>
+    <a asp-action="Index" asp-route-opcao="2">Subcrição Ativa</a>
+    <div class="row">
+        <form asp-controller="Empresas" asp-action="Search" method="post"> 
+            <div class="form-group pt-2 pb-2">
+                <input type="text" name="nome" placeholder="Nome da Empresa"/>
+                <button type="submit">Pesquisar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row pt-2">
+    <h2>Listagem</h2>    
+</div>
 <table class="table">
     <thead>
         <tr>

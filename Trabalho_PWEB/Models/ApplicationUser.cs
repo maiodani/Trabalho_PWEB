@@ -8,5 +8,6 @@ namespace Trabalho_PWEB.Models
         public string? PrimeiroNome { get; set; }
         [PersonalData]
         public string? UltimoNome { get; set; }
+        public int? EmpresaId { get; set; }
     }
 }

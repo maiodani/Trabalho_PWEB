@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Veiculos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar um Veiculo</a>
 </p>
 <table class="table">
     <thead>
@@ -16,19 +16,25 @@
                 @Html.DisplayNameFor(model => model.Matricula)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                @Html.DisplayNameFor(model => model.Marca)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Localização)
+                @Html.DisplayNameFor(model => model.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Preco)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ócupado)
+                @Html.DisplayNameFor(model => model.Localização)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataEntrega)
+                @Html.DisplayNameFor(model => model.Ativo)
             </th>
             <th></th>
         </tr>
@@ -40,24 +46,30 @@
                 @Html.DisplayFor(modelItem => item.Matricula)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estado)
+                @Html.DisplayFor(modelItem => item.Marca)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Localização)
+                @Html.DisplayFor(modelItem => item.Modelo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ócupado)
+                @Html.DisplayFor(modelItem => item.Localização)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataEntrega)
+                @Html.DisplayFor(modelItem => item.Ativo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Apagar</a>
             </td>
         </tr>
 }

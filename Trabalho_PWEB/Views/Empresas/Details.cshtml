@@ -5,7 +5,7 @@
     var funcionarios = new List<ApplicationUser>();
     funcionarios = Model.ListaFuncionarios.ToList();
     List<string> rolesUsers = ViewBag.rolesUsers;
-    List<Veiculo> veiculos = ViewBag.v;
+    List<Veiculo> veiculos = ViewBag.Veiculo;
     if (veiculos == null) veiculos = new List<Veiculo>();
     if (rolesUsers == null) rolesUsers = new List<string>();
 }
@@ -71,7 +71,10 @@
                         Matricula
                     </th>
                     <th>
-                        Categoria
+                        Marca
+                    </th>
+                    <th>
+                        Modelo
                     </th>
                 </tr>
             </thead>
@@ -81,9 +84,11 @@
                     <td>
                         @veiculos[i].Matricula
                     </td>
-                    
                     <td>
-                        @veiculos[i].categoria
+                        @veiculos[i].Marca
+                    </td>
+                    <td>
+                        @veiculos[i].Modelo
                     </td>
                 </tr>
                 }

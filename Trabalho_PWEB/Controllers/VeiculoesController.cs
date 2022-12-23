@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trabalho_PWEB.Data;
 using Trabalho_PWEB.Models;
 
 namespace Trabalho_PWEB.Controllers
 {
+    [Authorize(Roles = "Admin,Gestor")]
     public class VeiculoesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +19,19 @@ namespace Trabalho_PWEB.Controllers
         // GET: Veiculoes
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Veiculo.ToListAsync());
+            var userId = User.Identity.Name;
+            var empresaId = _context.Users.Where(u => u.UserName==userId).Select(u => u.EmpresaId).FirstOrDefault();
+            if (empresaId == null)
+            {
+                return View(await _context.Veiculo.ToListAsync());
+            }
+            var id = _context.Empresa.Where(e => e.Id == empresaId).Select(e => e.Id).First();
+            List<Veiculo> v = await _context.Veiculo.Where(v => v.EmpresaId == id).ToListAsync();
+            foreach(var veiculo in v)
+            {
+                veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
+            }
+            return View(v);
         }
 
         // GET: Veiculoes/Details/5
@@ -39,14 +48,19 @@ namespace Trabalho_PWEB.Controllers
             {
                 return NotFound();
             }
-
+            veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
             return View(veiculo);
         }
 
         // GET: Veiculoes/Create
         public IActionResult Create()
         {
-            return View();
+            List<string> c = _context.Categoria.Select(c => c.NomeCategoria).ToList();
+            List<int> i = _context.Categoria.Select(c => c.Id).ToList();
+            var model = new CreateVeiculoModelView();
+            model.Categorias = c;
+            model.CategoriasID = i;
+            return View(model);
         }
 
         // POST: Veiculoes/Create
@@ -54,15 +68,46 @@ namespace Trabalho_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Matricula,Estado,Localização,Preco,EmpresaId,Ócupado,DataEntrega")] Veiculo veiculo)
+        public async Task<IActionResult> Create(CreateVeiculoModelView model,int cat)
         {
-            if (ModelState.IsValid)
+            System.Diagnostics.Debug.WriteLine(model);
+            try
             {
-                _context.Add(veiculo);
+                Veiculo v = new Veiculo();
+                v.Matricula = model.Matricula;
+                v.Categoria = _context.Categoria.Where(c => c.Id == cat).FirstOrDefault();
+                v.CategoriaID = v.Categoria.Id;
+                v.Estado = model.Estado;
+                var userId = User.Identity.Name;
+                var empresaId = _context.Users.Where(u => u.UserName == userId).Select(u => u.EmpresaId).FirstOrDefault();
+                if (empresaId == null)
+                {
+                    List<string> c = _context.Categoria.Select(c => c.NomeCategoria).ToList();
+                    List<int> i = _context.Categoria.Select(c => c.Id).ToList();
+                    var m = new CreateVeiculoModelView();
+                    m.Categorias = c;
+                    m.CategoriasID = i;
+                    return View(m);
+                }
+                v.EmpresaId = empresaId;
+                v.Preco = model.Preco;
+                v.Modelo = model.Modelo;
+                v.Marca = model.Marca;
+                v.Localização = null;
+                v.Ativo = model.Ativo;
+                _context.Add(v);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(veiculo);
+            catch (Exception ex)
+            {
+                List<string> c = _context.Categoria.Select(c => c.NomeCategoria).ToList();
+                List<int> i = _context.Categoria.Select(c => c.Id).ToList();
+                var m = new CreateVeiculoModelView();
+                m.Categorias = c;
+                m.CategoriasID = i;
+                return View(m);
+            }
         }
 
         // GET: Veiculoes/Edit/5
@@ -78,6 +123,12 @@ namespace Trabalho_PWEB.Controllers
             {
                 return NotFound();
             }
+            List<string> c = _context.Categoria.Select(c => c.NomeCategoria).ToList();
+            List<int> i = _context.Categoria.Select(c => c.Id).ToList();
+            int selected = _context.Veiculo.Where(v => v.Id == id).Select(v => v.CategoriaID).First();
+            ViewBag.c = c;
+            ViewBag.i = i;
+            ViewBag.selected = selected;
             return View(veiculo);
         }
 
@@ -86,34 +137,40 @@ namespace Trabalho_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Estado,Localização,Preco,EmpresaId,Ócupado,DataEntrega")] Veiculo veiculo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Modelo,Marca,Estado,Preco,Ativo")] Veiculo veiculo,int cat)
         {
             if (id != veiculo.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(veiculo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VeiculoExists(veiculo.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                Veiculo aux = _context.Veiculo.Where(c => c.Id == veiculo.Id).FirstOrDefault();
+                veiculo.Localização = aux.Localização;
+                veiculo.DataEntrega = aux.DataEntrega;
+                veiculo.EmpresaId = aux.EmpresaId;
+                veiculo.Ocupado = aux.Ocupado;
+                veiculo.DataEntrega = aux.DataEntrega;
+                veiculo.CategoriaID = cat;
+                veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
+                _context.ChangeTracker.Clear();
+                _context.Update(veiculo);
+                await _context.SaveChangesAsync();
             }
-            return View(veiculo);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!VeiculoExists(veiculo.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Edit));
+
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Veiculoes/Delete/5
@@ -130,6 +187,7 @@ namespace Trabalho_PWEB.Controllers
             {
                 return NotFound();
             }
+            veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
 
             return View(veiculo);
         }

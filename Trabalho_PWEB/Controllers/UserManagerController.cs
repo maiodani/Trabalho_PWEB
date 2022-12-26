@@ -2,18 +2,23 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Trabalho_PWEB.Data;
 using Trabalho_PWEB.Models;
 namespace Trabalho_PWEB.Models
 {
+    [Authorize(Roles = "Admin")]
+
     public class UserManagerController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
         public UserManagerController(UserManager<ApplicationUser> userManager,
-       RoleManager<IdentityRole> roleManager)
+       RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
@@ -27,6 +32,7 @@ namespace Trabalho_PWEB.Models
                 aux.UserName = user.UserName;
                 aux.PrimeiroNome = user.PrimeiroNome;
                 aux.UltimoNome = user.UltimoNome;
+                aux.Ativo = user.Ativado;
                 IEnumerable<string> Roles = await _userManager.GetRolesAsync(_userManager.Users.Where(u => u.Id == user.Id).First());
                 aux.Roles = Roles;
                 userRolesViewModel.Add(aux);
@@ -111,7 +117,18 @@ namespace Trabalho_PWEB.Models
 
             return RedirectToAction("Index");
         }
-        
+        public async Task<IActionResult> Ativo(string userId) {
+            ApplicationUser u = _userManager.Users.Where(u => u.Id == userId).First();
+            if(u.Ativado == false){
+                u.Ativado = true;
+            }else{
+                u.Ativado=false;
+            }
+            _context.Update(u);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
+ 
 }
 

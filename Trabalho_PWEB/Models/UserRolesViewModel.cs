@@ -12,6 +12,8 @@ namespace Trabalho_PWEB.Models
         public string UltimoNome { get; set; }
         [Display(Name = "Username")]
         public string UserName { get; set; }
+        [Display(Name = "Ativo?")]
+        public bool Ativo { get; set; }
         [Display(Name = "Roles")]
         public IEnumerable<string> Roles { get; set; }
     }

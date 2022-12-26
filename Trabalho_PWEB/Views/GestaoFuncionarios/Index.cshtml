@@ -1,0 +1,80 @@
+﻿@model List<Trabalho_PWEB.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+    List<string> r;
+    if (ViewBag.r!= null)
+    {
+        r = ViewBag.r;
+    }else{
+        r = new List<string>();
+    }
+    int id=0;
+    if (ViewBag.id!= null)
+    {
+        id   = ViewBag.id;
+    }
+    string idUser="";
+    if(ViewBag.uID != null)
+    {
+        idUser = ViewBag.uID;
+    }
+}
+
+<p>
+    <a asp-action="Create" asp-route-id="@id">Criar Novo Funcionario</a>
+</p>
+<div class="row pt-2">
+    <h2>Listagem</h2>    
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                UserName
+            </th>
+            <th>
+                Nome
+            </th>
+            <th>
+                Ativo
+            </th>
+            <th>
+                Roles
+            </th>
+            <th>
+                Ações
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @for (int i=0;i<Model.Count();i++) {
+        <tr>
+            <td class="col-md-2">
+                @Html.DisplayFor(modelItem => Model[i].UserName)
+            </td>
+            <td class="col-md-3">
+                @Html.DisplayFor(modelItem => Model[i].PrimeiroNome) @Html.DisplayFor(modelItem => Model[i].UltimoNome)
+            </td>
+            <td class="col-md-1">
+                @Html.DisplayFor(modelItem => Model[i].Ativado)
+            </td>
+            <td class="col-md-2">
+                    @if (r.Count() >= 1) @r[i]
+                </td>
+            <td class="col-md-4">
+                @if (r.Count() >= 1 && r[i].CompareTo("Gestor")==-1)
+                {
+                <a asp-action="Ativo" asp-route-id="@Model[i].Id">Ativar/Desativar Funcionario</a>
+                @Html.DisplayText(" | ")
+                }
+                @if (Model[i].Id!=idUser)
+                {
+                    <a asp-action="Delete" asp-route-id="@Model[i].Id">Apagar Funcionario</a>
+                    @Html.DisplayText(" | ")
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

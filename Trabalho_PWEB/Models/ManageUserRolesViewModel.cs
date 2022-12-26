@@ -6,5 +6,6 @@
         public string RoleName { get; set; }
         public bool Selected { get; set; }
         public string UserID { get; set; }
+        public bool Ativo { get; set; }
     }
 }

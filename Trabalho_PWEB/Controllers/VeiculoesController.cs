@@ -6,7 +6,7 @@ using Trabalho_PWEB.Models;
 
 namespace Trabalho_PWEB.Controllers
 {
-    [Authorize(Roles = "Admin,Gestor")]
+    [Authorize(Roles = "Admin,Gestor,Funcionario")]
     public class VeiculoesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,21 +17,42 @@ namespace Trabalho_PWEB.Controllers
         }
 
         // GET: Veiculoes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? opcao,int cat)
         {
-            var userId = User.Identity.Name;
-            var empresaId = _context.Users.Where(u => u.UserName==userId).Select(u => u.EmpresaId).FirstOrDefault();
-            if (empresaId == null)
+            if(opcao == null)
             {
-                return View(await _context.Veiculo.ToListAsync());
+                ViewBag.c = _context.Categoria.ToList();
+                var userId = User.Identity.Name;
+                var empresaId = _context.Users.Where(u => u.UserName == userId).Select(u => u.EmpresaId).FirstOrDefault();
+                if (empresaId == null)
+                {
+                    return View(await _context.Veiculo.ToListAsync());
+                }
+                var id = _context.Empresa.Where(e => e.Id == empresaId).Select(e => e.Id).First();
+                List<Veiculo> v = await _context.Veiculo.Where(v => v.EmpresaId == id).ToListAsync();
+                foreach (var veiculo in v)
+                {
+                    veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
+                }
+                return View(v);
+            }else{
+                ViewBag.c = _context.Categoria.ToList();
+                var userId = User.Identity.Name;
+                var empresaId = _context.Users.Where(u => u.UserName == userId).Select(u => u.EmpresaId).FirstOrDefault();
+                if (empresaId == null)
+                {
+                    return View(await _context.Veiculo.ToListAsync());
+                }
+                var id = _context.Empresa.Where(e => e.Id == empresaId).Select(e => e.Id).First();
+                List<Veiculo> v = await _context.Veiculo.Where(v => v.EmpresaId == id).Where(v => v.CategoriaID==cat).ToListAsync();
+                foreach (var veiculo in v)
+                {
+                    veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
+                }
+                
+                return View(v);
             }
-            var id = _context.Empresa.Where(e => e.Id == empresaId).Select(e => e.Id).First();
-            List<Veiculo> v = await _context.Veiculo.Where(v => v.EmpresaId == id).ToListAsync();
-            foreach(var veiculo in v)
-            {
-                veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();
-            }
-            return View(v);
+            
         }
 
         // GET: Veiculoes/Details/5
@@ -70,7 +91,6 @@ namespace Trabalho_PWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateVeiculoModelView model,int cat)
         {
-            System.Diagnostics.Debug.WriteLine(model);
             try
             {
                 Veiculo v = new Veiculo();
@@ -93,8 +113,9 @@ namespace Trabalho_PWEB.Controllers
                 v.Preco = model.Preco;
                 v.Modelo = model.Modelo;
                 v.Marca = model.Marca;
-                v.Localização = null;
+                v.Localização = model.Localizacao;
                 v.Ativo = model.Ativo;
+                v.Ocupado = false;
                 _context.Add(v);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -137,7 +158,7 @@ namespace Trabalho_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Modelo,Marca,Estado,Preco,Ativo")] Veiculo veiculo,int cat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Matricula,Modelo,Marca,Estado,Localização,Preco,Ativo")] Veiculo veiculo,int cat)
         {
             if (id != veiculo.Id)
             {
@@ -147,7 +168,6 @@ namespace Trabalho_PWEB.Controllers
             try
             {
                 Veiculo aux = _context.Veiculo.Where(c => c.Id == veiculo.Id).FirstOrDefault();
-                veiculo.Localização = aux.Localização;
                 veiculo.DataEntrega = aux.DataEntrega;
                 veiculo.EmpresaId = aux.EmpresaId;
                 veiculo.Ocupado = aux.Ocupado;

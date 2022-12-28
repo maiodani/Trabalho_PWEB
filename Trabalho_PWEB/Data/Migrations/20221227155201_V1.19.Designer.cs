@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trabalho_PWEB.Data;
 
@@ -11,9 +12,10 @@ using Trabalho_PWEB.Data;
 namespace Trabalho_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221227155201_V1.19")]
+    partial class V119
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -278,7 +280,7 @@ namespace Trabalho_PWEB.Data.Migrations
                     b.ToTable("Empresa");
                 });
 
-            modelBuilder.Entity("Trabalho_PWEB.Models.Reservas", b =>
+            modelBuilder.Entity("Trabalho_PWEB.Models.Reserva", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,8 +297,8 @@ namespace Trabalho_PWEB.Data.Migrations
                     b.Property<DateTime>("DataLevantamento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdVeiculo")
-                        .HasColumnType("int");
+                    b.Property<string>("ReservanteId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("VeiculoId")
                         .HasColumnType("int");
@@ -310,9 +312,11 @@ namespace Trabalho_PWEB.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReservanteId");
+
                     b.HasIndex("VeiculoId");
 
-                    b.ToTable("Reservas");
+                    b.ToTable("Reserva");
                 });
 
             modelBuilder.Entity("Trabalho_PWEB.Models.Veiculo", b =>
@@ -355,7 +359,7 @@ namespace Trabalho_PWEB.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Ocupado")
+                    b.Property<bool?>("Ocupado")
                         .HasColumnType("bit");
 
                     b.Property<float>("Preco")
@@ -428,13 +432,19 @@ namespace Trabalho_PWEB.Data.Migrations
                         .HasForeignKey("EmpresaId");
                 });
 
-            modelBuilder.Entity("Trabalho_PWEB.Models.Reservas", b =>
+            modelBuilder.Entity("Trabalho_PWEB.Models.Reserva", b =>
                 {
+                    b.HasOne("Trabalho_PWEB.Models.ApplicationUser", "Reservante")
+                        .WithMany()
+                        .HasForeignKey("ReservanteId");
+
                     b.HasOne("Trabalho_PWEB.Models.Veiculo", "Veiculo")
                         .WithMany()
                         .HasForeignKey("VeiculoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Reservante");
 
                     b.Navigation("Veiculo");
                 });

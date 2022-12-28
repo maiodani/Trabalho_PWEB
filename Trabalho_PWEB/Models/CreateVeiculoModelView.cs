@@ -13,6 +13,9 @@ namespace Trabalho_PWEB.Models
         [Required]
         [Display(Name = "Modelo")]
         public string Modelo { get; set; }
+        [Required]
+        [Display(Name = "Localização")]
+        public string Localizacao { get; set; }
         [Display(Name = "Categoria")]
         public List<string>? Categorias { get; set; }
         public List<int>? CategoriasID { get; set; }

@@ -1,10 +1,69 @@
-﻿@{
+﻿@model Trabalho_PWEB.Models.PesquisaReservaModelView
+@{
     ViewData["Title"] = "Home Page";
+    string msg = "";
+    if(ViewBag.msg != null)
+    {
+        msg = ViewBag.msg;
+    }
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="row mb-5">
+        <h2>Rental4You</h2>
+    </div>
+    <div class="border p-4">
+        <form asp-controller="Home" asp-action="Search" method="post">
+            <div class="row p-0">
+                <div class="col-2 p-0"></div>
+                <div class="col-2 p-0">
+                    Localização
+                </div>
+                <div class="col-2 p-0">
+                    Categorias de Veiculo
+                </div>
+                <div class="col-2 p-0">
+                    Dia de Levantamento
+                </div>
+                <div class="col-2 p-0">
+                    Dia de Entrega
+                </div>
+            </div>
+            <div class="row p-0">
+                <div class="col-2 p-0"></div>
+                <div class="form-group col-2 p-0">
+                    <input class="shadow-none rounded-0 form-control" asp-for="Localizacao" type="text"/>
+                    <span asp-validation-for="Localizacao" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2 p-0">
+                    <select class="shadow-none rounded-0 form-control" name="cat" id="cat">
+                        @for(var i=0;i<@Model.Categorias.Count;i++){
+                            <option value="@Model.Categorias[i].Id"> @Model.Categorias[i].NomeCategoria</option>
+                        }
+                    </select>
+                   <span asp-validation-for="Categorias" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2 p-0">
+                    <input class="shadow-none rounded-0 form-control" name="DataLevantamento" id="DataLevantamento" type="date"  />
+                    <span asp-validation-for="DataLevantamento" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2 p-0">
+                    <input class="shadow-none rounded-0 form-control" name="DataEntrega" id="DataEntrega" type="date"  />
+                    <span asp-validation-for="DataEntrega" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group">
+                    <input type="submit" value="Pesquisar" class="btn btn-secondary" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <span class="text-danger">@msg</span>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 

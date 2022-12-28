@@ -26,12 +26,14 @@ namespace Trabalho_PWEB.Models
         public float Preco { get; set; }
         [Required]
         public bool Ativo { get; set; }
+        [Required]
+        public string Localização { get; set; }
 
         public int? EmpresaId { get; set; }
 
         //PROXIMOS DOIS NAO DEVEM APARECER NO REGISTER DE UM VEICULO POR UMA EMPRESA
-        public bool? Ocupado { get; set; } //SE ESTIVER A SER OCUPADO TEM A DATA DE ENTREGA - USADO PARA PESQUIAS POR DATA DE ENTREGA
+        public bool Ocupado { get; set; } //SE ESTIVER A SER OCUPADO TEM A DATA DE ENTREGA - USADO PARA PESQUIAS POR DATA DE ENTREGA
         public DateTime? DataEntrega { get; set; }
-        public string? Localização { get; set; }
+        
     }
 }

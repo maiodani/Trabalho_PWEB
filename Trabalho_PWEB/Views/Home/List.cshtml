@@ -1,64 +1,111 @@
-﻿@model IEnumerable<Trabalho_PWEB.Models.Veiculo>
+﻿@model Trabalho_PWEB.Models.ListVeiculosViewModel
 
 @{
     ViewData["Title"] = "List";
+    List<Categoria> c;
+    if(ViewBag.c != null)
+    {
+        c = ViewBag.c;
+    }else{
+        c = new List<Categoria>();
+    }
+    List<Veiculo> v = Model.veiculos.ToList();
 }
 
 <h1>List</h1>
+<div class="row">
+    <h3>Filtros</h3>
+</div>
+<div class="row">
+    <form asp-controller="Home" asp-action="Filtar" method="post">
+        <div class="form-group col-2 p-0">
+            <label>Categorias</label>
+            <select class="shadow-none rounded-0 form-control" name="cat" id="cat">
+                <option selected value="0"></option>
+                @for(var i=0;i<@c.Count;i++){
+                    <option value="@c[i].Id"> @c[i].NomeCategoria</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-2 p-0">
+            <input hidden class="hidden shadow-none rounded-0 form-control" asp-for="Localizacao" type="text" value=@Model.Localizacao/>
+        </div>
+        <div class="form-group col-2 p-0">
+            <input hidden class="hidden shadow-none rounded-0 form-control" type="text" asp-for="DataLevantamento" value="@Model.DataLevantamento"/>
+        </div>
+        <div class="form-group col-2 p-0">
+            <input hidden class="hidden shadow-none rounded-0 form-control" asp-for="DataEntrega" type="text" value="@Model.DataEntrega" />
+        </div>
+        <div class="row mt-2">
+            <div class="form-group">
+                <input type="submit" value="Filtrar" class="btn btn-secondary" />
+            </div>
+        </div>
+    </form>
+</div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Matricula)
+                Matricula
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Marca)
+                Marca
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Modelo)
+                Modelo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Categoria)
+                Categoria
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                Estado
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Preco)
+                Preço
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Localização)
+                Localização
+            </th>
+            <th>
+                Empresa
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@for(int i=0;i<Model.veiculos.Count;i++) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Matricula)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Matricula)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Marca)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Marca)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Modelo)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Modelo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Categoria.NomeCategoria)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Categoria.NomeCategoria)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estado)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Estado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Preco)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Preco)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Localização)
+                @Html.DisplayFor(modelItem => Model.veiculos[i].Localização)
             </td>
             <td>
-                <a asp-action="Reservar" asp-route-id="@item.Id">Reservar</a>
+                @Html.DisplayFor(modelItem => Model.empresa[i].Nome)
+            </td>
+            <td>
+                <a asp-action="Reservar" asp-route-id="@Model.veiculos[i].Id"
+                asp-route-dataE="@Model.DataEntrega"
+                asp-route-dataL="@Model.DataLevantamento"
+                >Reservar</a>
             </td>
         </tr>
 }

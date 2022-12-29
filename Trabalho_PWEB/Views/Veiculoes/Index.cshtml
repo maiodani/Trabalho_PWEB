@@ -24,6 +24,7 @@
             <div class="row form-group">
                 <div class="col-2">
                     <select class="form-control" name="cat" id="cat">
+                        <option value="0"></option>
                     @for(var i=0;i<c.Count;i++){
                         <option value="@c[i].Id"> @c[i].NomeCategoria</option>
                     }

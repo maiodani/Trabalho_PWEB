@@ -44,7 +44,14 @@ namespace Trabalho_PWEB.Controllers
                     return View(await _context.Veiculo.ToListAsync());
                 }
                 var id = _context.Empresa.Where(e => e.Id == empresaId).Select(e => e.Id).First();
-                List<Veiculo> v = await _context.Veiculo.Where(v => v.EmpresaId == id).Where(v => v.CategoriaID==cat).ToListAsync();
+                List<Veiculo> v;
+                if (cat == 0)
+                {
+                    v = await _context.Veiculo.Where(v => v.EmpresaId == id).ToListAsync();
+                }else {
+                    v = await _context.Veiculo.Where(v => v.EmpresaId == id).Where(v => v.CategoriaID == cat).ToListAsync();
+
+                }
                 foreach (var veiculo in v)
                 {
                     veiculo.Categoria = _context.Categoria.Where(c => c.Id == veiculo.CategoriaID).FirstOrDefault();

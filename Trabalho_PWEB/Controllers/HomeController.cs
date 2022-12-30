@@ -98,6 +98,7 @@ namespace Trabalho_PWEB.Controllers
             r.DataLevantamento = DateTime.Parse(dataL);
             r.DataEntrega = DateTime.Parse(dataE);
             r.Ativa = false;
+            r.ReservaAceite = false;
             _context.Add(r);
             _context.SaveChanges();
             return RedirectToAction("Index");

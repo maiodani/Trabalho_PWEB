@@ -1,0 +1,58 @@
+﻿@model ListReservasViewModel
+
+@{
+    ViewData["Title"] = "Historico";
+}
+
+<h1>Historico</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID Reserva
+            </th>
+            <th>
+                Email Reservante
+            </th>
+            <th>
+                Matricula
+            </th>
+            <th>
+                Data Levantamento
+            </th>
+            <th>
+                Data Entrega
+            </th>
+            <th>
+                Acabou?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@for (int i=0;i<Model.reservas.Count;i++) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.reservas[i].Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.users[i].Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.veiculo[i].Matricula)
+            </td>
+            <td>
+                @Model.reservas[i].DataLevantamento.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Model.reservas[i].DataEntrega.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.reservas[i].Acabou)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

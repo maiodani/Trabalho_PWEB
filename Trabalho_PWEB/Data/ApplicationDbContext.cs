@@ -14,6 +14,7 @@ namespace Trabalho_PWEB.Data
         public DbSet<Trabalho_PWEB.Models.Empresa> Empresa { get; set; }
         public DbSet<Trabalho_PWEB.Models.Veiculo> Veiculo { get; set; }
         public DbSet<Trabalho_PWEB.Models.Reservas> Reservas { get; set; }
+        public DbSet<Trabalho_PWEB.Models.EstadoCarro> EstadoCarro { get; set; }
 
     }
 }

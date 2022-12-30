@@ -1,57 +1,89 @@
-﻿@model IEnumerable<Trabalho_PWEB.Models.Reservas>
+﻿@model ListReservasViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista";
+    string msg = "";
+    if(ViewBag.msg != null)
+    {
+        msg = ViewBag.msg;
+    } 
 }
 
-<h1>Index</h1>
+<h1>Lista</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Historico">Historico de Reservas Acabadas</a>
 </p>
+<div class="row">
+    <div class="form-group">
+        <span class="text-danger">@msg</span>
+     </div>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.idReservante)
+                ID Reserva
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataLevantamento)
+                Email Reservante
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataEntrega)
+                Matricula
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.idReservaEstadoCarro)
+                Data Levantamento
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ativa)
+                Data Entrega
+            </th>
+            <th>
+                Aceite?
+            </th>
+            <th>
+                Ativa?
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@for (int i=0;i<Model.reservas.Count;i++) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.idReservante)
+                @Html.DisplayFor(modelItem => Model.reservas[i].Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataLevantamento)
+                @Html.DisplayFor(modelItem => Model.users[i].Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DataEntrega)
+                @Html.DisplayFor(modelItem => Model.veiculo[i].Matricula)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.idReservaEstadoCarro)
+                @Model.reservas[i].DataLevantamento.ToString("dd/MM/yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ativa)
+                @Model.reservas[i].DataEntrega.ToString("dd/MM/yyyy")
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => Model.reservas[i].ReservaAceite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.reservas[i].Ativa)
+            </td>
+            <td>
+                @if (Model.reservas[i].ReservaAceite == false){
+                        <a asp-action="Aceitar" asp-route-id="@Model.reservas[i].Id">Aceitar Reserva</a>
+                    }else{
+                        if (Model.reservas[i].Ativa == false){
+                            <a asp-action="Aceitar" asp-route-id="@Model.reservas[i].Id">Rejeitar Reserva</a>
+                        } 
+                }
+                @if (Model.reservas[i].ReservaAceite == true && Model.reservas[i].Ativa==false){
+                    <a asp-action="Entregar" asp-route-id="@Model.reservas[i].Id">Levantar Veiculo </a>
+                }
+                @if (Model.reservas[i].ReservaAceite == true && Model.reservas[i].Ativa==true){
+                    <a asp-action="Receber" asp-route-id="@Model.reservas[i].Id">Entregar Veiculo a Empresa </a>
+                }
             </td>
         </tr>
 }

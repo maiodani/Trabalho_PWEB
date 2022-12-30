@@ -1,0 +1,58 @@
+﻿@model ListReservasClienteViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID Reserva
+            </th>
+            <th>
+                Data de Levantamento
+            </th>
+            <th>
+                Data de Entrega
+            </th>
+            <th>
+                Matricula do Carro
+            </th>
+            <th>
+                Empresa
+            </th>
+            <th>
+                Aceite Pela Empresa
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@for(int i =0;i<Model.v.Count;i++) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.r[i].Id)
+            </td>
+            <td>
+                @Model.r[i].DataLevantamento.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Model.r[i].DataEntrega.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.v[i].Matricula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.e[i].Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.r[i].ReservaAceite)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@Model.r[i].Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

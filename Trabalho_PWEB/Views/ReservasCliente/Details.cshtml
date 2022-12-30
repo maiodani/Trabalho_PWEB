@@ -1,0 +1,86 @@
+﻿@model DetailsReservaClienteViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+<div>
+    <h2>Detalhes</h2>
+    <hr />
+    <h4>Reservas</h4>
+    <div class="row">
+        <dl class="row col-4 border m-2">
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.r.Id)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.r.Id)
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.r.DataLevantamento)
+            </dt>
+            <dd class = "col-sm-6">
+                @Model.r.DataLevantamento.ToString("dd/MM/yyyy")
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.r.DataEntrega)
+            </dt>
+            <dd class = "col-sm-6">
+                @Model.r.DataEntrega.ToString("dd/MM/yyyy")
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.r.ReservaAceite)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.r.ReservaAceite)
+            </dd>
+        </dl>
+    </div>
+    <h4>Veiculo</h4>
+     <div class="row">
+        <dl class="row col-4 border m-2">
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.v.Matricula)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.v.Matricula)
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.v.Marca)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.v.Marca)
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.v.Modelo)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.v.Modelo)
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.v.Preco)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.v.Preco)
+            </dd>
+        </dl>
+    </div>
+    <h4>Empresa</h4>
+    <div class="row">
+        <dl class="row col-4 border m-2">
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.e.Nome)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.e.Nome)
+            </dd>
+            <dt class = "col-sm-6">
+                @Html.DisplayNameFor(model => model.e.Avaliação)
+            </dt>
+            <dd class = "col-sm-6">
+                @Html.DisplayFor(model => model.e.Avaliação)
+            </dd>
+        </dl>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Voltar a Lista</a>
+</div>

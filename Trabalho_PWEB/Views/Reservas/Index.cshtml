@@ -71,12 +71,11 @@
                 @Html.DisplayFor(modelItem => Model.reservas[i].Ativa)
             </td>
             <td>
-                @if (Model.reservas[i].ReservaAceite == false){
+                @if (Model.reservas[i].ReservaAceite == false && DateOnly.FromDateTime(Model.reservas[i].DataEntrega).CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0){
                         <a asp-action="Aceitar" asp-route-id="@Model.reservas[i].Id">Aceitar Reserva</a>
-                    }else{
-                        if (Model.reservas[i].Ativa == false){
-                            <a asp-action="Aceitar" asp-route-id="@Model.reservas[i].Id">Rejeitar Reserva</a>
-                        } 
+                }
+                @if (Model.reservas[i].ReservaAceite == false){
+                    <a asp-action="Rejeitar" asp-route-id="@Model.reservas[i].Id">Rejeitar Reserva</a>
                 }
                 @if (Model.reservas[i].ReservaAceite == true && Model.reservas[i].Ativa==false){
                     <a asp-action="Entregar" asp-route-id="@Model.reservas[i].Id">Levantar Veiculo </a>

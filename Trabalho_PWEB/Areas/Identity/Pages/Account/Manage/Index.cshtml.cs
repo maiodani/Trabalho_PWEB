@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Trabalho_PWEB.Data;
 using Trabalho_PWEB.Models;
 
 namespace Trabalho_PWEB.Areas.Identity.Pages.Account.Manage
@@ -17,13 +18,16 @@ namespace Trabalho_PWEB.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         /// <summary>
@@ -57,20 +61,28 @@ namespace Trabalho_PWEB.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Telemovel")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Primeiro Nome")]
+            public string PrimeiroNome { get; set; }
+            [Display(Name = "Ultimo Nome")]
+            public string UltimoNome { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var pn = _context.Users.Where(u => u.Id == user.Id).Select(u => u.PrimeiroNome).First();
+            var un = _context.Users.Where(u => u.Id == user.Id).Select(u => u.UltimoNome).First();
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                PrimeiroNome = pn,
+                UltimoNome = un
             };
         }
 
@@ -110,7 +122,10 @@ namespace Trabalho_PWEB.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            user.PrimeiroNome = Input.PrimeiroNome;
+            user.UltimoNome = Input.UltimoNome;
+            _context.Update(user);
+            _context.SaveChanges();
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

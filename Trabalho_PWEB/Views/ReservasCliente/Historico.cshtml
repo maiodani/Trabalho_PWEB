@@ -1,4 +1,4 @@
-﻿@model ListReservasViewModel
+﻿@model ListReservasClienteViewModel
 
 @{
     ViewData["Title"] = "Historico";
@@ -10,9 +10,6 @@
         <tr>
             <th>
                 ID Reserva
-            </th>
-            <th>
-                Email Reservante
             </th>
             <th>
                 Matricula
@@ -30,28 +27,25 @@
         </tr>
     </thead>
     <tbody>
-@for (int i=0;i<Model.reservas.Count;i++) {
+@for (int i=0;i<Model.r.Count;i++) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => Model.reservas[i].Id)
+                @Html.DisplayFor(modelItem => Model.r[i].Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => Model.users[i].Email)
+                @Html.DisplayFor(modelItem => Model.v[i].Matricula)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => Model.veiculo[i].Matricula)
+                @Model.r[i].DataLevantamento.ToString("dd/MM/yyyy")
             </td>
             <td>
-                @Model.reservas[i].DataLevantamento.ToString("dd/MM/yyyy")
+                @Model.r[i].DataEntrega.ToString("dd/MM/yyyy")
             </td>
             <td>
-                @Model.reservas[i].DataEntrega.ToString("dd/MM/yyyy")
+                @Html.DisplayFor(modelItem => Model.r[i].Acabou)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => Model.reservas[i].Acabou)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@Model.reservas[i].Id">Detalhes</a>
+                <a asp-action="Details" asp-route-id="@Model.r[i].Id">Detalhes</a>
             </td>
         </tr>
 }

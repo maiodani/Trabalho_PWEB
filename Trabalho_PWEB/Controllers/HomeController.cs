@@ -35,7 +35,7 @@ namespace Trabalho_PWEB.Controllers
             prmv.DataLevantamento = new DateOnly();
             prmv.DataLevantamento = DateOnly.Parse(DataLevantamento);
             
-            List<Reservas> r = _context.Reservas.ToList();
+            List<Reservas> r = _context.Reservas.Where(r => r.Acabou == false).ToList();
             List<Veiculo> veiculosComReserva = new List<Veiculo>();
             foreach (var item in r){ //VAI ADICIONAR A LISTA TODAS AS RESERVAS QUE ESTAO NA TIME FRAME QUE O UTLIZADOR INTRODUZIU
                 if (DateOnly.FromDateTime(item.DataLevantamento).CompareTo(prmv.DataLevantamento) >= 0 && DateOnly.FromDateTime(item.DataEntrega).CompareTo(prmv.DataEntrega) <= 0){

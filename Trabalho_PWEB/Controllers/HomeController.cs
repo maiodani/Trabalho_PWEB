@@ -37,7 +37,7 @@ namespace Trabalho_PWEB.Controllers
             if (prmv.DataEntrega.CompareTo(prmv.DataLevantamento) <= 0){
                 return RedirectToAction("Index", "Home", new { msg = "Data de Levantamento tem que ser antes da Data de Entrega!" });
             }
-            if (prmv.DataLevantamento.CompareTo(DateTime.Now) < 0)
+            if (prmv.DataLevantamento.CompareTo(DateOnly.FromDateTime(DateTime.Now)) < 0)
             {
                 return RedirectToAction("Index", "Home", new { msg = "Data de Levantamento tem no currente dia ou depois!" });
             }

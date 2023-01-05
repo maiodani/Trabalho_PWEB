@@ -21,7 +21,7 @@ namespace Trabalho_PWEB.Controllers
         public async Task<IActionResult> AddRole(string roleName)
         {
             var role = new IdentityRole(roleName);
-            _roleManager.CreateAsync(role);
+            await _roleManager.CreateAsync(role);
             return RedirectToAction("Index");
         }
     }

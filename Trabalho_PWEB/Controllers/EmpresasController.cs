@@ -105,14 +105,21 @@ namespace Trabalho_PWEB.Controllers
                 UserName = model.Email,
                 Email = model.Email,
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
+                Ativado = true
             };
             var user = await _userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
                 await _userManager.CreateAsync(defaultUser, model.Password);
-                await _userManager.AddToRoleAsync(defaultUser, Roles.Gestor.ToString());
-            }else{
+                try{
+                    await _userManager.AddToRoleAsync(defaultUser, Roles.Gestor.ToString());
+                }catch (Exception ex)
+                {
+                    return View();
+                }
+            }
+            else{
                 return View();
             }
             Empresa empresa = new Empresa();

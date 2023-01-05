@@ -70,7 +70,8 @@ namespace Trabalho_PWEB.Controllers
                 Email = model.Email,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-                EmpresaId = id
+                EmpresaId = id,
+                Ativado = true
             };
             var user = await _userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)

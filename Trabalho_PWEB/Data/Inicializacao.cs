@@ -20,9 +20,24 @@ namespace Trabalho_PWEB.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Funcionario.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Gestor.ToString()));
             //Adicionar Default User - Admin
-
-            var user = await userManager.FindByEmailAsync("TiagoF2001@gmail.com");
-            await userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+            var defaultUser = new ApplicationUser
+            {
+                UserName = "admin@gmail.com",
+                Email = "admin@gmail.com",
+                PrimeiroNome = "admin",
+                UltimoNome = "admin",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser,"Admin1_");
+                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                }
+            }
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Trabalho_PWEB.Models
         [Display(Name = "Localização")]
         public string Localizacao { get; set; }
         [Display(Name = "Categoria")]
-        public List<string>? Categorias { get; set; }
+        [Required]
+        public List<string> Categorias { get; set; }
         public List<int>? CategoriasID { get; set; }
         [Required]
         [Display(Name = "Estado do Carro")]

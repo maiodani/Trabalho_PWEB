@@ -27,8 +27,9 @@ using (var scope = app.Services.CreateScope())
         await Inicializacao.CriaDadosIniciais(userManager, roleManager);
         //Log.Information("Identity User Data Seeding finished");
     }
-    catch (Exception)
+    catch (Exception e)
     {
+        System.Diagnostics.Debug.WriteLine(e);
         throw;
     }
 }

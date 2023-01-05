@@ -48,7 +48,11 @@
         </tr>
     </thead>
     <tbody>
-    @for (int i=0;i<Model.Count();i++) {
+        @if (Model.Count() > 0)
+        {
+            
+        
+        @for (int i=0;i<Model.Count();i++) {
         <tr>
             <td class="col-md-2">
                 @Html.DisplayFor(modelItem => Model[i].UserName)
@@ -75,6 +79,7 @@
                 }
             </td>
         </tr>
+        }
     }
     </tbody>
 </table>

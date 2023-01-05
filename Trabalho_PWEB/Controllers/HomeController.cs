@@ -37,6 +37,7 @@ namespace Trabalho_PWEB.Controllers
             if (prmv.DataEntrega.CompareTo(prmv.DataLevantamento) <= 0){
                 return RedirectToAction("Index", "Home", new { msg = "Data de Levantamento tem que ser antes da Data de Entrega!" });
             }
+            if(prmv.DataLevantamento.CompareTo(DateTime.Now) < 0){
             List<Reservas> r = _context.Reservas.Where(r => r.Acabou == false).ToList();
             List<Veiculo> veiculosComReserva = new List<Veiculo>();
             foreach (var item in r){ //VAI ADICIONAR A LISTA TODAS AS RESERVAS QUE ESTAO NA TIME FRAME QUE O UTLIZADOR INTRODUZIU

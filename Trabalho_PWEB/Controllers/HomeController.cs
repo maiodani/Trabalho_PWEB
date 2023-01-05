@@ -34,7 +34,7 @@ namespace Trabalho_PWEB.Controllers
             prmv.DataEntrega = DateOnly.Parse(DataEntrega);
             prmv.DataLevantamento = new DateOnly();
             prmv.DataLevantamento = DateOnly.Parse(DataLevantamento);
-            if (prmv.DataEntrega.CompareTo(prmv.DataLevantamento) >= 0){
+            if (prmv.DataEntrega.CompareTo(prmv.DataLevantamento) <= 0){
                 return RedirectToAction("Index", "Home", new { msg = "Data de Levantamento tem que ser antes da Data de Entrega!" });
             }
             List<Reservas> r = _context.Reservas.Where(r => r.Acabou == false).ToList();
